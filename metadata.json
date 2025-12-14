@@ -1,0 +1,7 @@
+{
+  "name": "CareShifts Marketplace",
+  "description": "A marketplace connecting care homes with qualified care workers for shift coverage.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
