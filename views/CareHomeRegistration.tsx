@@ -77,7 +77,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                   name="name"
                   type="text"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm bg-white text-gray-900"
                   placeholder="e.g. Sunny Meadows Care"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -99,7 +99,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                   name="contactPerson"
                   type="text"
                   required
-                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="e.g. Jane Smith"
                   value={formData.contactPerson}
                   onChange={(e) => setFormData({ ...formData, contactPerson: e.target.value })}
@@ -122,7 +122,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                       name="phoneNumber"
                       type="tel"
                       required
-                      className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2"
+                      className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                       placeholder="0123 456 7890"
                       value={formData.phoneNumber}
                       onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
@@ -141,7 +141,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                       id="mobileNumber"
                       name="mobileNumber"
                       type="tel"
-                      className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2"
+                      className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                       placeholder="07700 900000"
                       value={formData.mobileNumber}
                       onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
@@ -163,7 +163,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                   id="address"
                   name="address"
                   type="text"
-                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="e.g. 123 Care Lane"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
@@ -181,7 +181,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                     name="city"
                     type="text"
                     required
-                    className="mt-1 focus:ring-teal-500 focus:border-teal-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3"
+                    className="mt-1 focus:ring-teal-500 focus:border-teal-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 bg-white text-gray-900"
                     placeholder="e.g. Manchester"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -196,7 +196,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                     name="postCode"
                     type="text"
                     required
-                    className="mt-1 focus:ring-teal-500 focus:border-teal-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3"
+                    className="mt-1 focus:ring-teal-500 focus:border-teal-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 bg-white text-gray-900"
                     placeholder="e.g. M1 1AA"
                     value={formData.postCode}
                     onChange={(e) => setFormData({ ...formData, postCode: e.target.value })}
@@ -216,7 +216,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                 <select
                   id="careType"
                   name="careType"
-                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   value={formData.careType}
                   onChange={(e) => setFormData({ ...formData, careType: e.target.value })}
                 >
@@ -243,7 +243,7 @@ export const CareHomeRegistration: React.FC<CareHomeRegistrationProps> = ({ onRe
                   id="description"
                   name="description"
                   rows={3}
-                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="Tell workers about your facility..."
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}

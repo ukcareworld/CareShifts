@@ -98,7 +98,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   name="name"
                   type="text"
                   required
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white text-gray-900"
                   placeholder="e.g. John Doe"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -120,7 +120,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   name="email"
                   type="email"
                   required
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="you@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -142,7 +142,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                     id="gender"
                     name="gender"
                     required
-                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white text-gray-900"
                     value={formData.gender}
                     onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
                   >
@@ -165,7 +165,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                     id="ethnicity"
                     name="ethnicity"
                     required
-                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
+                    className="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md bg-white text-gray-900"
                     value={formData.ethnicity}
                     onChange={(e) => setFormData({ ...formData, ethnicity: e.target.value })}
                   >
@@ -195,7 +195,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   name="mobileNumber"
                   type="tel"
                   required
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="07700 900000"
                   value={formData.mobileNumber}
                   onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
@@ -217,7 +217,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   name="address"
                   type="text"
                   required
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="e.g. 123 Worker Lane"
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
@@ -239,7 +239,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                     name="city"
                     type="text"
                     required
-                    className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2"
+                    className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-9 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                     placeholder="e.g. London"
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
@@ -255,7 +255,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   name="postCode"
                   type="text"
                   required
-                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3"
+                  className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 bg-white text-gray-900"
                   placeholder="e.g. SW1A 1AA"
                   value={formData.postCode}
                   onChange={(e) => setFormData({ ...formData, postCode: e.target.value })}
@@ -297,7 +297,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                       <input
                         id="licenceNumber"
                         type="text"
-                        className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3"
+                        className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md py-2 px-3 bg-white text-gray-900"
                         placeholder="Enter Licence Number"
                         value={formData.drivingLicenceNumber}
                         onChange={(e) => setFormData({...formData, drivingLicenceNumber: e.target.value})}
@@ -317,7 +317,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                  </div>
                  <select
                     id="visaStatus"
-                    className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                    className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                     value={formData.visaStatus}
                     onChange={(e) => setFormData({...formData, visaStatus: e.target.value})}
                  >
@@ -342,7 +342,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                    type="number"
                    min="10"
                    required
-                   className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                   className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                    value={formData.hourlyRate}
                    onChange={(e) => setFormData({ ...formData, hourlyRate: Number(e.target.value) })}
                  />
@@ -362,7 +362,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   id="skills"
                   name="skills"
                   type="text"
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="e.g. Dementia, First Aid, Manual Handling"
                   value={formData.skills}
                   onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
@@ -383,7 +383,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   id="bio"
                   name="bio"
                   rows={3}
-                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2"
+                  className="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 sm:text-sm border-gray-300 rounded-md py-2 bg-white text-gray-900"
                   placeholder="Tell care homes about your experience..."
                   value={formData.bio}
                   onChange={(e) => setFormData({ ...formData, bio: e.target.value })}

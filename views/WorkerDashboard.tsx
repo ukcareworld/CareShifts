@@ -451,20 +451,20 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                            <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                           <input name="name" type="text" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                           <input name="name" type="text" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" required />
                         </div>
                         <div>
                            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                           <input name="email" type="email" value={formData.email} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                           <input name="email" type="email" value={formData.email} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" required />
                         </div>
                         <div>
                            <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-                           <input name="mobileNumber" type="tel" value={formData.mobileNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input name="mobileNumber" type="tel" value={formData.mobileNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                                <select name="gender" value={formData.gender} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none">
+                                <select name="gender" value={formData.gender} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900">
                                     <option value="">Select</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -473,7 +473,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Ethnicity</label>
-                                <select name="ethnicity" value={formData.ethnicity} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none">
+                                <select name="ethnicity" value={formData.ethnicity} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900">
                                     <option value="">Select</option>
                                     <option value="White">White</option>
                                     <option value="Mixed">Mixed</option>
@@ -493,16 +493,16 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
                     <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center"><MapPin size={14} className="mr-2"/> Location</h3>
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Street Address</label>
-                        <input name="address" type="text" value={formData.address} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Street Address" />
+                        <input name="address" type="text" value={formData.address} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" placeholder="Street Address" />
                      </div>
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                          <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                            <input name="city" type="text" value={formData.city} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input name="city" type="text" value={formData.city} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                          </div>
                          <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Post Code</label>
-                            <input name="postCode" type="text" value={formData.postCode} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input name="postCode" type="text" value={formData.postCode} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                          </div>
                      </div>
                  </section>
@@ -516,11 +516,11 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
                         <div>
                            <label className="block text-sm font-medium text-gray-700 mb-1">Hourly Rate (£)</label>
-                           <input name="hourlyRate" type="number" value={formData.hourlyRate} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                           <input name="hourlyRate" type="number" value={formData.hourlyRate} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Visa Status</label>
-                            <select name="visaStatus" value={formData.visaStatus} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none">
+                            <select name="visaStatus" value={formData.visaStatus} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900">
                                 <option value="No Visa Needed">No Visa Needed</option>
                                 <option value="Student Visa">Student Visa</option>
                                 <option value="Skilled Worker Visa">Skilled Worker Visa</option>
@@ -530,12 +530,12 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
 
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Skills (comma separated)</label>
-                        <input type="text" value={skillsString} onChange={(e) => setSkillsString(e.target.value)} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input type="text" value={skillsString} onChange={(e) => setSkillsString(e.target.value)} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                     </div>
 
                     <div className="mb-4">
                         <label className="block text-sm font-medium text-gray-700 mb-1">Bio</label>
-                        <textarea name="bio" rows={4} value={formData.bio} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <textarea name="bio" rows={4} value={formData.bio} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                     </div>
 
                     <div className="flex items-center gap-2 mb-2">
@@ -544,7 +544,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
                     </div>
                     {hasDrivingLicence && (
                         <div className="animate-in fade-in slide-in-from-top-2">
-                            <input name="drivingLicenceNumber" type="text" placeholder="Licence Number" value={formData.drivingLicenceNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                            <input name="drivingLicenceNumber" type="text" placeholder="Licence Number" value={formData.drivingLicenceNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                         </div>
                     )}
                  </section>

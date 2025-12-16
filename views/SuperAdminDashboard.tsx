@@ -696,7 +696,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                          <input 
                             type="text" 
                             placeholder="Search shifts..." 
-                            className="w-full pl-9 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500"
+                            className="w-full pl-9 pr-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900"
                             value={shiftSearch}
                             onChange={(e) => setShiftSearch(e.target.value)}
                          />
@@ -706,7 +706,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                           <div className="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2">
                             <Filter size={14} className="text-slate-400" />
                             <select 
-                                className="py-1.5 text-sm bg-transparent outline-none text-slate-600"
+                                className="py-1.5 text-sm bg-transparent outline-none text-slate-900"
                                 value={shiftFilterMonth}
                                 onChange={(e) => setShiftFilterMonth(e.target.value)}
                             >
@@ -715,7 +715,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                             </select>
                             <div className="w-px h-4 bg-slate-200"></div>
                             <select 
-                                className="py-1.5 text-sm bg-transparent outline-none text-slate-600"
+                                className="py-1.5 text-sm bg-transparent outline-none text-slate-900"
                                 value={shiftFilterYear}
                                 onChange={(e) => setShiftFilterYear(e.target.value)}
                             >
@@ -725,7 +725,7 @@ export const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({
                           </div>
 
                           <select 
-                             className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white"
+                             className="px-3 py-1.5 text-sm border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-indigo-500 bg-white text-slate-900"
                              value={shiftFilter}
                              onChange={(e) => setShiftFilter(e.target.value as any)}
                           >

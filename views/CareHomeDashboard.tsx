@@ -318,7 +318,7 @@ const ShiftDetailsModal: React.FC<{
                 <div className="mb-4">
                   <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Feedback Comment</label>
                   <textarea 
-                    className="w-full border border-orange-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none"
+                    className="w-full border border-orange-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-orange-500 outline-none bg-white text-gray-900"
                     rows={3}
                     placeholder="How was the worker's performance? Any issues?"
                     value={approvalComment}
@@ -467,11 +467,11 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Care Home Name</label>
-                        <input name="name" type="text" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" required />
+                        <input name="name" type="text" value={formData.name} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" required />
                      </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Contact Person</label>
-                        <input name="contactPerson" type="text" value={formData.contactPerson} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input name="contactPerson" type="text" value={formData.contactPerson} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                      </div>
                  </div>
 
@@ -479,34 +479,34 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                        <input name="phoneNumber" type="tel" value={formData.phoneNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input name="phoneNumber" type="tel" value={formData.phoneNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                      </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number</label>
-                        <input name="mobileNumber" type="tel" value={formData.mobileNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input name="mobileNumber" type="tel" value={formData.mobileNumber} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                      </div>
                  </div>
 
                  {/* Location */}
                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                    <input name="address" type="text" value={formData.address} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" placeholder="Street Address" />
+                    <input name="address" type="text" value={formData.address} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" placeholder="Street Address" />
                  </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                        <input name="city" type="text" value={formData.city} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input name="city" type="text" value={formData.city} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                      </div>
                      <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Post Code</label>
-                        <input name="postCode" type="text" value={formData.postCode} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                        <input name="postCode" type="text" value={formData.postCode} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                      </div>
                  </div>
 
                  {/* Facility Details */}
                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Care Type</label>
-                    <select name="careType" value={formData.careType} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none">
+                    <select name="careType" value={formData.careType} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900">
                         <option>Residential Care</option>
                         <option>Nursing Care</option>
                         <option>Dementia Care</option>
@@ -518,7 +518,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
 
                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea name="description" rows={4} value={formData.description} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none" />
+                    <textarea name="description" rows={4} value={formData.description} onChange={handleChange} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900" />
                  </div>
                  
                  <div className="flex items-center">
@@ -777,7 +777,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
               <input 
                 type="text" 
                 required
-                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none"
+                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900"
                 placeholder="e.g. Senior Night Care Assistant"
                 value={newShift.title}
                 onChange={e => setNewShift({...newShift, title: e.target.value})}
@@ -798,7 +798,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
               </label>
               <textarea 
                 required
-                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none"
+                className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-teal-500 outline-none bg-white text-gray-900"
                 rows={4}
                 placeholder="Describe the role or let AI help you..."
                 value={newShift.description}
@@ -812,7 +812,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                 <input 
                   type="date" 
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  className="w-full border border-gray-300 rounded-lg p-2 bg-white text-gray-900"
                   value={newShift.date}
                   onChange={e => setNewShift({...newShift, date: e.target.value})}
                 />
@@ -822,7 +822,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                 <input 
                   type="time" 
                   required
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  className="w-full border border-gray-300 rounded-lg p-2 bg-white text-gray-900"
                   value={newShift.startTime}
                   onChange={e => setNewShift({...newShift, startTime: e.target.value})}
                 />
@@ -835,7 +835,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                 <input 
                   type="number" 
                   min="1"
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  className="w-full border border-gray-300 rounded-lg p-2 bg-white text-gray-900"
                   value={newShift.durationHours}
                   onChange={e => setNewShift({...newShift, durationHours: parseInt(e.target.value)})}
                 />
@@ -845,7 +845,7 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                 <input 
                   type="number" 
                   min="10"
-                  className="w-full border border-gray-300 rounded-lg p-2"
+                  className="w-full border border-gray-300 rounded-lg p-2 bg-white text-gray-900"
                   value={newShift.hourlyRate}
                   onChange={e => setNewShift({...newShift, hourlyRate: parseInt(e.target.value)})}
                 />
