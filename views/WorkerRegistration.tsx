@@ -48,6 +48,7 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
       ethnicity: formData.ethnicity,
       rating: 5.0,
       totalRatings: 0,
+      shiftsCompleted: 0,
       approved: false, // Requires admin approval
       bio: formData.bio,
       hourlyRate: Number(formData.hourlyRate),

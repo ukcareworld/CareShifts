@@ -61,8 +61,8 @@ const WorkerProfileModal: React.FC<{
                  <span className="text-xs text-gray-500 mt-1">{worker.totalRatings} Reviews</span>
               </div>
               <div className="flex flex-col items-center flex-1 border-r border-gray-200">
-                 <span className="text-2xl font-bold text-gray-900">{worker.skills.length}</span>
-                 <span className="text-xs text-gray-500 uppercase font-medium mt-1">Skills</span>
+                 <span className="text-2xl font-bold text-gray-900">{worker.shiftsCompleted || 0}</span>
+                 <span className="text-xs text-gray-500 uppercase font-medium mt-1">Shifts Done</span>
               </div>
               <div className="flex flex-col items-center flex-1">
                  <span className="text-2xl font-bold text-gray-900">{worker.documents.filter(d => d.verified).length}</span>
@@ -74,24 +74,36 @@ const WorkerProfileModal: React.FC<{
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                <div className="p-4 border border-gray-100 rounded-lg">
                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                       <UserIcon size={14}/> Personal Details
+                       <UserIcon size={14}/> Personal & Contact
                    </h4>
                    <div className="space-y-2 text-sm">
-                       <div className="flex justify-between border-b border-gray-50 pb-1">
-                           <span className="text-gray-500">Gender</span>
-                           <span className="font-medium text-gray-900">{worker.gender || 'Not Specified'}</span>
-                       </div>
-                       <div className="flex justify-between border-b border-gray-50 pb-1">
-                           <span className="text-gray-500">Ethnicity</span>
-                           <span className="font-medium text-gray-900">{worker.ethnicity || 'Not Specified'}</span>
-                       </div>
                        <div className="flex justify-between border-b border-gray-50 pb-1">
                            <span className="text-gray-500">Mobile</span>
                            <span className="font-medium text-gray-900">{worker.mobileNumber || 'N/A'}</span>
                        </div>
-                       <div className="flex justify-between pb-1">
+                       <div className="flex justify-between border-b border-gray-50 pb-1">
                            <span className="text-gray-500">Email</span>
                            <span className="font-medium text-gray-900 truncate max-w-[150px]" title={worker.email}>{worker.email || 'N/A'}</span>
+                       </div>
+                       <div className="flex justify-between border-b border-gray-50 pb-1">
+                           <span className="text-gray-500">Address</span>
+                           <span className="font-medium text-gray-900 text-right truncate max-w-[150px]" title={worker.address}>{worker.address || 'Not Disclosed'}</span>
+                       </div>
+                        <div className="flex justify-between border-b border-gray-50 pb-1">
+                           <span className="text-gray-500">City</span>
+                           <span className="font-medium text-gray-900">{worker.city || 'N/A'}</span>
+                       </div>
+                       <div className="flex justify-between border-b border-gray-50 pb-1">
+                           <span className="text-gray-500">Post Code</span>
+                           <span className="font-medium text-gray-900">{worker.postCode || 'N/A'}</span>
+                       </div>
+                       <div className="flex justify-between border-b border-gray-50 pb-1">
+                           <span className="text-gray-500">Gender</span>
+                           <span className="font-medium text-gray-900">{worker.gender || 'Not Specified'}</span>
+                       </div>
+                       <div className="flex justify-between pb-1">
+                           <span className="text-gray-500">Ethnicity</span>
+                           <span className="font-medium text-gray-900">{worker.ethnicity || 'Not Specified'}</span>
                        </div>
                    </div>
                </div>
@@ -344,6 +356,12 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
   const [selectedShiftForBooking, setSelectedShiftForBooking] = useState<string | null>(null);
   const [selectedWorkerForProfile, setSelectedWorkerForProfile] = useState<WorkerProfile | null>(null);
   const [selectedShiftForDetails, setSelectedShiftForDetails] = useState<Shift | null>(null);
+
+  // Filter workers based on the Care Home's city
+  const localWorkers = availableWorkers.filter(worker => 
+    worker.city && user.city && 
+    worker.city.trim().toLowerCase() === user.city.trim().toLowerCase()
+  );
 
   const handleAIImprove = async () => {
     if (!newShift.title) return;
@@ -805,59 +823,72 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
             </div>
           )}
           
+          <div className="mb-4 p-3 bg-blue-50 text-blue-700 rounded-lg text-sm flex items-center">
+             <MapPin size={16} className="mr-2" />
+             Showing workers in <strong>{user.city || 'Your Area'}</strong>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {availableWorkers.map(worker => (
-              <div key={worker.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
-                <img src={worker.avatar} alt={worker.name} className="w-20 h-20 rounded-full object-cover border-2 border-gray-100" />
-                <div className="flex-1">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-lg font-bold">{worker.name}</h3>
-                    <div className="text-right">
-                       <span className="block font-bold text-teal-600">£{worker.hourlyRate}/hr</span>
+            {localWorkers.length > 0 ? (
+                localWorkers.map(worker => (
+                  <div key={worker.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
+                    <img src={worker.avatar} alt={worker.name} className="w-20 h-20 rounded-full object-cover border-2 border-gray-100" />
+                    <div className="flex-1">
+                      <div className="flex justify-between items-start">
+                        <h3 className="text-lg font-bold">{worker.name}</h3>
+                        <div className="text-right">
+                          <span className="block font-bold text-teal-600">£{worker.hourlyRate}/hr</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center text-yellow-500 text-sm mb-2">
+                        <StarRating rating={worker.rating} size={14} />
+                        <span className="ml-1 text-gray-400">({worker.totalRatings})</span>
+                      </div>
+                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">{worker.bio}</p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {worker.skills.slice(0, 3).map(skill => (
+                          <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded border border-gray-200">{skill}</span>
+                        ))}
+                      </div>
+
+                      <div className="flex gap-2">
+                        <button
+                            onClick={() => setSelectedWorkerForProfile(worker)}
+                            className="flex-1 border border-teal-600 text-teal-600 py-2 rounded-lg text-sm font-medium hover:bg-teal-50 transition"
+                        >
+                            View Profile
+                        </button>
+                        {selectedShiftForBooking ? (
+                            <button 
+                            onClick={() => {
+                              onBookWorker(selectedShiftForBooking, worker.id);
+                              setSelectedShiftForBooking(null);
+                              setActiveTab('overview');
+                            }}
+                            className="flex-1 bg-teal-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition"
+                            >
+                            Book Now
+                            </button>
+                        ) : (
+                            <button 
+                            disabled
+                            className="flex-1 bg-gray-100 text-gray-400 py-2 rounded-lg text-sm font-medium cursor-not-allowed"
+                            >
+                            Select Shift
+                            </button>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center text-yellow-500 text-sm mb-2">
-                    <StarRating rating={worker.rating} size={14} />
-                    <span className="ml-1 text-gray-400">({worker.totalRatings})</span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3 line-clamp-2">{worker.bio}</p>
-                  
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {worker.skills.slice(0, 3).map(skill => (
-                      <span key={skill} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded border border-gray-200">{skill}</span>
-                    ))}
-                  </div>
-
-                  <div className="flex gap-2">
-                     <button
-                        onClick={() => setSelectedWorkerForProfile(worker)}
-                        className="flex-1 border border-teal-600 text-teal-600 py-2 rounded-lg text-sm font-medium hover:bg-teal-50 transition"
-                     >
-                        View Profile
-                     </button>
-                     {selectedShiftForBooking ? (
-                        <button 
-                        onClick={() => {
-                           onBookWorker(selectedShiftForBooking, worker.id);
-                           setSelectedShiftForBooking(null);
-                           setActiveTab('overview');
-                        }}
-                        className="flex-1 bg-teal-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition"
-                        >
-                        Book Now
-                        </button>
-                     ) : (
-                        <button 
-                        disabled
-                        className="flex-1 bg-gray-100 text-gray-400 py-2 rounded-lg text-sm font-medium cursor-not-allowed"
-                        >
-                        Select Shift
-                        </button>
-                     )}
-                  </div>
+                ))
+            ) : (
+                <div className="col-span-full text-center py-12 text-gray-500 bg-white rounded-xl border border-dashed border-gray-300">
+                    <MapPin size={48} className="mx-auto mb-4 opacity-30" />
+                    <p className="text-lg font-medium">No workers found in {user.city}</p>
+                    <p className="text-sm">We filter workers by location to ensure they can reach your care home.</p>
                 </div>
-              </div>
-            ))}
+            )}
           </div>
         </div>
       )}

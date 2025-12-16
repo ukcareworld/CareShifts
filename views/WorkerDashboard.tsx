@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WorkerProfile, Shift, ShiftStatus, User } from '../types';
 import { StarRating } from '../components/StarRating';
-import { MapPin, Calendar, Clock, DollarSign, FileText, CheckCircle, XCircle, Play, Square, Lock, Archive, Info, Car, Activity, X, Save, User as UserIcon, Mail, Smartphone, Globe, Briefcase } from 'lucide-react';
+import { MapPin, Calendar, Clock, DollarSign, FileText, CheckCircle, XCircle, Play, Square, Lock, Archive, Info, Car, Activity, X, Save, User as UserIcon, Mail, Smartphone, Globe, Briefcase, Camera } from 'lucide-react';
 
 interface WorkerDashboardProps {
   worker: WorkerProfile;
@@ -277,6 +277,7 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
   const ProfileEditor = () => {
     const [formData, setFormData] = useState({
         name: worker.name,
+        avatar: worker.avatar,
         email: worker.email || '',
         mobileNumber: worker.mobileNumber || '',
         address: worker.address || '',
@@ -300,6 +301,17 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
         setShowSuccess(false);
     };
 
+    const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFormData(prev => ({ ...prev, avatar: reader.result as string }));
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         const updatedData = {
@@ -319,13 +331,21 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
         <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
              {/* Header */}
              <div className="p-6 border-b border-gray-100 bg-gray-50 flex items-center gap-4">
-                <img src={worker.avatar} alt="Profile" className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" />
+                <div className="relative group">
+                    <img src={formData.avatar} alt="Profile" className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-sm" />
+                    <label className="absolute inset-0 flex items-center justify-center bg-black/30 rounded-full opacity-0 group-hover:opacity-100 transition cursor-pointer">
+                        <Camera size={20} className="text-white drop-shadow-md" />
+                        <input type="file" accept="image/*" className="hidden" onChange={handleAvatarChange} />
+                    </label>
+                </div>
                 <div>
                     <h2 className="text-xl font-bold text-gray-900">Edit Profile</h2>
                     <div className="flex items-center text-yellow-500 text-sm">
                         <span className="font-bold mr-1">{worker.rating.toFixed(1)}</span>
                         <StarRating rating={worker.rating} size={12} />
                         <span className="text-gray-400 ml-1">({worker.totalRatings} reviews)</span>
+                        <span className="text-gray-300 mx-2">|</span>
+                        <span className="text-gray-600 font-medium">{worker.shiftsCompleted || 0} shifts done</span>
                     </div>
                 </div>
              </div>
@@ -485,8 +505,14 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
           <h1 className="text-2xl font-bold text-gray-900">Hello, {worker.name}</h1>
           <p className="text-gray-500">Ready to work?</p>
         </div>
-        <div className="bg-teal-50 text-teal-700 px-4 py-2 rounded-full font-bold">
-           ${worker.hourlyRate}/hr
+        <div className="flex items-center gap-3">
+            <div className="hidden sm:block text-right">
+                <p className="text-sm font-bold text-gray-700">{worker.shiftsCompleted || 0} Shifts Completed</p>
+                <p className="text-xs text-gray-500">{worker.totalRatings} Ratings</p>
+            </div>
+            <div className="bg-teal-50 text-teal-700 px-4 py-2 rounded-full font-bold">
+            ${worker.hourlyRate}/hr
+            </div>
         </div>
       </div>
 

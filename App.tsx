@@ -34,6 +34,9 @@ const MOCK_WORKERS: WorkerProfile[] = [
     role: UserRole.WORKER,
     avatar: 'https://picsum.photos/200/200?random=2',
     location: 'Manchester, UK',
+    city: 'Manchester',
+    address: '42 Oxford Road',
+    postCode: 'M14 5AB',
     rating: 4.9,
     totalRatings: 45,
     hourlyRate: 22,
@@ -44,7 +47,8 @@ const MOCK_WORKERS: WorkerProfile[] = [
       { name: 'Nursing Degree', verified: true, type: 'CERTIFICATE' },
       { name: 'Passport', verified: true, type: 'ID' }
     ],
-    skills: ['Dementia Care', 'Medication Admin', 'Night Shift']
+    skills: ['Dementia Care', 'Medication Admin', 'Night Shift'],
+    shiftsCompleted: 142
   },
   {
     id: 'w_2',
@@ -52,6 +56,9 @@ const MOCK_WORKERS: WorkerProfile[] = [
     role: UserRole.WORKER,
     avatar: 'https://picsum.photos/200/200?random=3',
     location: 'Manchester, UK',
+    city: 'Manchester',
+    address: '15 Wilmslow Park',
+    postCode: 'M20 2CD',
     rating: 4.5,
     totalRatings: 12,
     hourlyRate: 19,
@@ -61,7 +68,8 @@ const MOCK_WORKERS: WorkerProfile[] = [
       { name: 'DBS Certificate', verified: true, type: 'DBS' },
       { name: 'Driving License', verified: false, type: 'ID' }
     ],
-    skills: ['Mobility Support', 'Personal Care']
+    skills: ['Mobility Support', 'Personal Care'],
+    shiftsCompleted: 34
   },
   {
     id: 'w_3',
@@ -69,6 +77,9 @@ const MOCK_WORKERS: WorkerProfile[] = [
     role: UserRole.WORKER,
     avatar: 'https://picsum.photos/200/200?random=4',
     location: 'Bolton, UK',
+    city: 'Bolton',
+    address: '78 Chorley New Road',
+    postCode: 'BL1 4TH',
     rating: 4.7,
     totalRatings: 89,
     hourlyRate: 25,
@@ -78,7 +89,8 @@ const MOCK_WORKERS: WorkerProfile[] = [
       { name: 'DBS Enhanced', verified: true, type: 'DBS' },
       { name: 'NVQ Level 3', verified: true, type: 'CERTIFICATE' }
     ],
-    skills: ['Palliative Care', 'Team Leadership', 'First Aid']
+    skills: ['Palliative Care', 'Team Leadership', 'First Aid'],
+    shiftsCompleted: 215
   }
 ];
 
@@ -155,14 +167,21 @@ export default function App() {
         : s
     ));
     
-    // Update worker rating (naive implementation)
+    // Update worker rating and increment shifts completed
     const shift = shifts.find(s => s.id === shiftId);
     if(shift?.workerId) {
         setWorkers(prev => prev.map(w => {
             if (w.id === shift.workerId) {
                 const newTotal = w.totalRatings + 1;
                 const newRating = ((w.rating * w.totalRatings) + rating) / newTotal;
-                return { ...w, rating: newRating, totalRatings: newTotal };
+                const newShiftsCompleted = (w.shiftsCompleted || 0) + 1;
+                
+                return { 
+                  ...w, 
+                  rating: newRating, 
+                  totalRatings: newTotal,
+                  shiftsCompleted: newShiftsCompleted
+                };
             }
             return w;
         }));

@@ -49,6 +49,7 @@ export interface WorkerProfile extends User {
   visaStatus?: string;
   gender?: string;
   ethnicity?: string;
+  shiftsCompleted: number;
 }
 
 export interface Shift {
