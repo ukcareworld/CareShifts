@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Shift, ShiftStatus, User, WorkerProfile } from '../types';
 import { StarRating } from '../components/StarRating';
 import { generateShiftDescription } from '../services/geminiService';
-import { Plus, Users, Calendar, Clock, MapPin, Search, Sparkles, CheckCircle, Award, Archive, X, FileText, User as UserIcon, Mail, Phone, ShieldCheck, Settings, Save, Briefcase } from 'lucide-react';
+import { Plus, Users, Calendar, Clock, MapPin, Search, Sparkles, CheckCircle, Award, Archive, X, FileText, User as UserIcon, Mail, Phone, ShieldCheck, Settings, Save, Briefcase, CalendarX, Filter } from 'lucide-react';
 
 interface CareHomeDashboardProps {
   user: User;
@@ -13,6 +13,13 @@ interface CareHomeDashboardProps {
   onApproveShift: (shiftId: string, rating: number, comment?: string) => void;
   onUpdateProfile: (updatedProfile: Partial<User>) => void;
 }
+
+const MONTHS = [
+  { value: '01', label: 'January' }, { value: '02', label: 'February' }, { value: '03', label: 'March' },
+  { value: '04', label: 'April' }, { value: '05', label: 'May' }, { value: '06', label: 'June' },
+  { value: '07', label: 'July' }, { value: '08', label: 'August' }, { value: '09', label: 'September' },
+  { value: '10', label: 'October' }, { value: '11', label: 'November' }, { value: '12', label: 'December' }
+];
 
 const WorkerProfileModal: React.FC<{ 
   worker: WorkerProfile; 
@@ -356,6 +363,8 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
   const [selectedShiftForBooking, setSelectedShiftForBooking] = useState<string | null>(null);
   const [selectedWorkerForProfile, setSelectedWorkerForProfile] = useState<WorkerProfile | null>(null);
   const [selectedShiftForDetails, setSelectedShiftForDetails] = useState<Shift | null>(null);
+  const [historyYear, setHistoryYear] = useState<string>('ALL');
+  const [historyMonth, setHistoryMonth] = useState<string>('ALL');
 
   // Filter workers based on the Care Home's city
   const localWorkers = availableWorkers.filter(worker => 
@@ -396,6 +405,16 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
   const activeShifts = myShifts.filter(s => [ShiftStatus.BOOKED, ShiftStatus.IN_PROGRESS, ShiftStatus.PENDING_ACCEPTANCE].includes(s.status));
   const approvalNeeded = myShifts.filter(s => s.status === ShiftStatus.COMPLETED_PENDING_APPROVAL);
   const historyShifts = myShifts.filter(s => s.status === ShiftStatus.CLOSED);
+
+  // Compute available years from history shifts
+  const availableYears = Array.from(new Set(historyShifts.map(s => s.date.split('-')[0]))).sort().reverse();
+
+  // Filter Logic for History
+  const filteredHistory = historyShifts.filter(s => {
+      if (historyYear !== 'ALL' && !s.date.startsWith(historyYear)) return false;
+      if (historyMonth !== 'ALL' && s.date.split('-')[1] !== historyMonth) return false;
+      return true;
+  });
 
   const ProfileEditor = () => {
     const [formData, setFormData] = useState<Partial<User>>({
@@ -663,21 +682,49 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
 
       {activeTab === 'history' && (
         <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          <div className="p-6 border-b border-gray-100 flex items-center justify-between">
+          {/* Header & Filter */}
+          <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <h3 className="text-lg font-bold text-gray-900 flex items-center">
               <Archive className="mr-2 text-gray-400" size={20}/> Past Shift History
             </h3>
-            <span className="text-sm text-gray-500">{historyShifts.length} completed</span>
+            
+            <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-200">
+                    <Filter size={14} className="text-gray-400 ml-2" />
+                    <select 
+                       className="bg-transparent text-sm font-medium text-gray-700 outline-none p-1"
+                       value={historyMonth}
+                       onChange={(e) => setHistoryMonth(e.target.value)}
+                    >
+                       <option value="ALL">All Months</option>
+                       {MONTHS.map(m => (
+                          <option key={m.value} value={m.value}>{m.label}</option>
+                       ))}
+                    </select>
+                    <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                    <select 
+                       className="bg-transparent text-sm font-medium text-gray-700 outline-none p-1"
+                       value={historyYear}
+                       onChange={(e) => setHistoryYear(e.target.value)}
+                    >
+                       <option value="ALL">All Years</option>
+                       {availableYears.map(year => (
+                          <option key={year} value={year}>{year}</option>
+                       ))}
+                    </select>
+                </div>
+                <span className="text-sm text-gray-500 ml-2">{filteredHistory.length} records</span>
+            </div>
           </div>
           
-          {historyShifts.length === 0 ? (
+          {filteredHistory.length === 0 ? (
              <div className="p-12 text-center text-gray-400">
                <Archive size={48} className="mx-auto mb-4 opacity-30" />
-               <p>No completed shifts found in history.</p>
+               <p>No completed shifts found for the selected period.</p>
              </div>
           ) : (
             <div className="divide-y divide-gray-100">
-              {historyShifts.map(shift => {
+              {filteredHistory.map(shift => {
                  const worker = availableWorkers.find(w => w.id === shift.workerId);
                  return (
                   <div 
@@ -830,9 +877,25 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {localWorkers.length > 0 ? (
-                localWorkers.map(worker => (
-                  <div key={worker.id} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 hover:shadow-md transition">
-                    <img src={worker.avatar} alt={worker.name} className="w-20 h-20 rounded-full object-cover border-2 border-gray-100" />
+                localWorkers.map(worker => {
+                  // CHECK IF WORKER IS ALREADY BOOKED FOR THE SELECTED SHIFT DATE
+                  const targetShift = shifts.find(s => s.id === selectedShiftForBooking);
+                  const isWorkerBookedOnDate = targetShift ? shifts.some(s => 
+                     s.workerId === worker.id && 
+                     s.date === targetShift.date && 
+                     (s.status === ShiftStatus.BOOKED || s.status === ShiftStatus.IN_PROGRESS || s.status === ShiftStatus.COMPLETED_PENDING_APPROVAL || s.status === ShiftStatus.CLOSED)
+                  ) : false;
+
+                  return (
+                  <div key={worker.id} className={`bg-white p-6 rounded-xl shadow-sm border flex flex-col md:flex-row gap-6 transition ${isWorkerBookedOnDate ? 'border-gray-100 opacity-60' : 'border-gray-100 hover:shadow-md'}`}>
+                    <div className="relative">
+                       <img src={worker.avatar} alt={worker.name} className={`w-20 h-20 rounded-full object-cover border-2 ${isWorkerBookedOnDate ? 'border-gray-200 grayscale' : 'border-gray-100'}`} />
+                       {isWorkerBookedOnDate && (
+                         <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-gray-600 text-white text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap z-10">
+                            Booked
+                         </div>
+                       )}
+                    </div>
                     <div className="flex-1">
                       <div className="flex justify-between items-start">
                         <h3 className="text-lg font-bold">{worker.name}</h3>
@@ -860,28 +923,39 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
                             View Profile
                         </button>
                         {selectedShiftForBooking ? (
-                            <button 
-                            onClick={() => {
-                              onBookWorker(selectedShiftForBooking, worker.id);
-                              setSelectedShiftForBooking(null);
-                              setActiveTab('overview');
-                            }}
-                            className="flex-1 bg-teal-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition"
-                            >
-                            Book Now
-                            </button>
+                            isWorkerBookedOnDate ? (
+                                <button 
+                                disabled
+                                className="flex-1 bg-gray-200 text-gray-500 py-2 rounded-lg text-sm font-medium cursor-not-allowed flex items-center justify-center gap-1"
+                                title="Worker already has a confirmed shift on this date"
+                                >
+                                <CalendarX size={14}/> Unavailable
+                                </button>
+                            ) : (
+                                <button 
+                                onClick={() => {
+                                  onBookWorker(selectedShiftForBooking, worker.id);
+                                  setSelectedShiftForBooking(null);
+                                  setActiveTab('overview');
+                                }}
+                                className="flex-1 bg-teal-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-teal-700 transition"
+                                >
+                                Book Now
+                                </button>
+                            )
                         ) : (
                             <button 
                             disabled
                             className="flex-1 bg-gray-100 text-gray-400 py-2 rounded-lg text-sm font-medium cursor-not-allowed"
                             >
-                            Select Shift
+                            Select Shift First
                             </button>
                         )}
                       </div>
                     </div>
                   </div>
-                ))
+                );
+                })
             ) : (
                 <div className="col-span-full text-center py-12 text-gray-500 bg-white rounded-xl border border-dashed border-gray-300">
                     <MapPin size={48} className="mx-auto mb-4 opacity-30" />
@@ -902,6 +976,15 @@ export const CareHomeDashboard: React.FC<CareHomeDashboardProps> = ({
             worker={selectedWorkerForProfile} 
             onClose={() => setSelectedWorkerForProfile(null)}
             onBook={selectedShiftForBooking ? () => {
+                // Perform quick availability check again before booking from modal
+                const targetShift = shifts.find(s => s.id === selectedShiftForBooking);
+                const isBooked = targetShift ? shifts.some(s => s.workerId === selectedWorkerForProfile.id && s.date === targetShift.date && (s.status === ShiftStatus.BOOKED || s.status === ShiftStatus.IN_PROGRESS)) : false;
+                
+                if (isBooked) {
+                    alert("This worker is unavailable for the selected date.");
+                    return;
+                }
+
                 onBookWorker(selectedShiftForBooking, selectedWorkerForProfile.id);
                 setSelectedShiftForBooking(null);
                 setSelectedWorkerForProfile(null);

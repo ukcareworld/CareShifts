@@ -126,6 +126,9 @@ export const WorkerRegistration: React.FC<WorkerRegistrationProps> = ({ onRegist
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
               </div>
+              <p className="mt-1 text-xs text-blue-600 flex items-center">
+                 We'll send a verification link to this email.
+              </p>
             </div>
 
              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

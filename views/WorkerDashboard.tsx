@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { WorkerProfile, Shift, ShiftStatus, User } from '../types';
 import { StarRating } from '../components/StarRating';
-import { MapPin, Calendar, Clock, DollarSign, FileText, CheckCircle, XCircle, Play, Square, Lock, Archive, Info, Car, Activity, X, Save, User as UserIcon, Mail, Smartphone, Globe, Briefcase, Camera } from 'lucide-react';
+import { MapPin, Calendar, Clock, DollarSign, FileText, CheckCircle, XCircle, Play, Square, Lock, Archive, Info, Car, Activity, X, Save, User as UserIcon, Mail, Smartphone, Globe, Briefcase, Camera, Phone, Filter } from 'lucide-react';
 
 interface WorkerDashboardProps {
   worker: WorkerProfile;
@@ -19,75 +19,157 @@ interface ShiftCardProps {
   onRateShift: (shiftId: string, rating: number) => void;
 }
 
+const MONTHS = [
+  { value: '01', label: 'January' }, { value: '02', label: 'February' }, { value: '03', label: 'March' },
+  { value: '04', label: 'April' }, { value: '05', label: 'May' }, { value: '06', label: 'June' },
+  { value: '07', label: 'July' }, { value: '08', label: 'August' }, { value: '09', label: 'September' },
+  { value: '10', label: 'October' }, { value: '11', label: 'November' }, { value: '12', label: 'December' }
+];
+
 const CareHomeProfileModal: React.FC<{ careHome: User; onClose: () => void }> = ({ careHome, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-200">
-        <button 
-          onClick={onClose}
-          className="absolute top-4 right-4 p-1 bg-gray-100 hover:bg-gray-200 rounded-full transition"
-        >
-          <X size={20} className="text-gray-500" />
-        </button>
-
-        <div className="h-24 bg-teal-600"></div>
-        <div className="px-6 pb-6 -mt-12 relative">
-           <img 
-             src={careHome.avatar} 
-             alt={careHome.name} 
-             className="w-24 h-24 rounded-xl border-4 border-white shadow-md object-cover bg-white"
-           />
-           
-           <div className="mt-4">
-             <h2 className="text-2xl font-bold text-gray-900">{careHome.name}</h2>
-             <div className="flex items-center text-gray-600 mt-1 mb-4">
-                <MapPin size={16} className="mr-1" />
-                <span className="text-sm">{careHome.location}</span>
-             </div>
-             
-             <div className="flex items-center gap-2 mb-6">
-                <div className="flex items-center bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
-                  <StarRating rating={careHome.rating} size={14} />
-                  <span className="ml-2 text-xs font-bold text-yellow-700">{careHome.rating.toFixed(1)} ({careHome.totalRatings})</span>
-                </div>
-             </div>
-
-             <div className="space-y-4">
-               {careHome.careType && (
-                 <div className="flex items-start">
-                    <Activity className="text-teal-600 mt-0.5 mr-3" size={18} />
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900">Care Type</h4>
-                      <p className="text-sm text-gray-600">{careHome.careType}</p>
-                    </div>
-                 </div>
-               )}
-
-               {careHome.hasParking !== undefined && (
-                 <div className="flex items-start">
-                    <Car className="text-teal-600 mt-0.5 mr-3" size={18} />
-                    <div>
-                      <h4 className="text-sm font-semibold text-gray-900">Parking</h4>
-                      <p className="text-sm text-gray-600">
-                        {careHome.hasParking ? 'Available on-site' : 'Street parking only / Not available'}
-                      </p>
-                    </div>
-                 </div>
-               )}
-
-               {careHome.description && (
-                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 mt-2">
-                   <h4 className="text-xs font-bold text-gray-500 uppercase mb-2">About Us</h4>
-                   <p className="text-sm text-gray-700 leading-relaxed">{careHome.description}</p>
-                 </div>
-               )}
-             </div>
-           </div>
-        </div>
+      <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-200 flex flex-col max-h-[90vh]">
         
-        <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
-           <button onClick={onClose} className="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm font-medium hover:bg-gray-50 transition">
-             Close Profile
+        {/* Header */}
+        <div className="bg-teal-700 text-white p-6 flex justify-between items-start">
+           <div className="flex gap-4 items-center">
+              <img src={careHome.avatar} alt={careHome.name} className="w-20 h-20 rounded-lg border-4 border-teal-800 bg-white object-cover"/>
+              <div>
+                <h2 className="text-2xl font-bold">{careHome.name}</h2>
+                <div className="flex items-center gap-2 mt-1 text-teal-100">
+                   <MapPin size={14} />
+                   <span className="text-sm">{careHome.city || careHome.location}</span>
+                </div>
+                 <div className="flex items-center gap-2 mt-2">
+                    <div className="flex items-center bg-teal-800 px-2 py-0.5 rounded text-xs border border-teal-600">
+                      <StarRating rating={careHome.rating} size={12} />
+                      <span className="ml-1 font-bold">{careHome.rating.toFixed(1)}</span>
+                    </div>
+                    {careHome.approved && (
+                        <span className="flex items-center bg-teal-800 px-2 py-0.5 rounded text-xs border border-teal-600">
+                             <CheckCircle size={10} className="mr-1"/> Verified
+                        </span>
+                    )}
+                 </div>
+              </div>
+           </div>
+           <button onClick={onClose} className="text-teal-200 hover:text-white transition">
+             <X size={28} />
+           </button>
+        </div>
+
+        {/* Scrollable Content */}
+        <div className="p-6 overflow-y-auto flex-1 space-y-6">
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Contact Info */}
+                <div className="p-4 border border-gray-100 rounded-lg bg-gray-50/50">
+                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                       <UserIcon size={14}/> Contact Details
+                   </h4>
+                   <div className="space-y-3 text-sm">
+                       <div className="flex items-start gap-3">
+                            <UserIcon size={16} className="text-gray-400 mt-0.5" />
+                            <div>
+                                <p className="text-xs text-gray-500">Contact Person</p>
+                                <p className="font-medium text-gray-900">{careHome.contactPerson || 'Not Provided'}</p>
+                            </div>
+                       </div>
+                       <div className="flex items-start gap-3">
+                            <Phone size={16} className="text-gray-400 mt-0.5" />
+                            <div>
+                                <p className="text-xs text-gray-500">Phone</p>
+                                <p className="font-medium text-gray-900">{careHome.phoneNumber || 'Not Provided'}</p>
+                            </div>
+                       </div>
+                       {careHome.mobileNumber && (
+                           <div className="flex items-start gap-3">
+                                <Smartphone size={16} className="text-gray-400 mt-0.5" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Mobile</p>
+                                    <p className="font-medium text-gray-900">{careHome.mobileNumber}</p>
+                                </div>
+                           </div>
+                       )}
+                       {careHome.email && (
+                           <div className="flex items-start gap-3">
+                                <Mail size={16} className="text-gray-400 mt-0.5" />
+                                <div>
+                                    <p className="text-xs text-gray-500">Email</p>
+                                    <p className="font-medium text-gray-900 break-all">{careHome.email}</p>
+                                </div>
+                           </div>
+                       )}
+                   </div>
+                </div>
+
+                {/* Location Info */}
+                <div className="p-4 border border-gray-100 rounded-lg bg-gray-50/50">
+                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
+                       <MapPin size={14}/> Address & Location
+                   </h4>
+                   <div className="space-y-3 text-sm">
+                        <div className="flex items-start gap-3">
+                            <MapPin size={16} className="text-gray-400 mt-0.5" />
+                            <div>
+                                <p className="text-xs text-gray-500">Full Address</p>
+                                <p className="font-medium text-gray-900">
+                                    {careHome.address || ''}<br/>
+                                    {careHome.city || ''}<br/>
+                                    {careHome.postCode || ''}
+                                    {(!careHome.address && !careHome.city) && careHome.location}
+                                </p>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+           </div>
+
+           {/* Facility Details */}
+           <section>
+              <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">Facility Information</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-center p-3 bg-white border border-gray-200 rounded-lg">
+                      <div className="bg-teal-50 p-2 rounded text-teal-600 mr-3">
+                          <Activity size={18} />
+                      </div>
+                      <div>
+                          <p className="text-xs text-gray-500">Care Type</p>
+                          <p className="font-medium text-sm text-gray-900">{careHome.careType || 'General Care'}</p>
+                      </div>
+                  </div>
+                  <div className="flex items-center p-3 bg-white border border-gray-200 rounded-lg">
+                      <div className="bg-blue-50 p-2 rounded text-blue-600 mr-3">
+                          <Car size={18} />
+                      </div>
+                      <div>
+                          <p className="text-xs text-gray-500">Parking</p>
+                          <p className="font-medium text-sm text-gray-900">{careHome.hasParking ? 'Available On-site' : 'No Parking / Street Only'}</p>
+                      </div>
+                  </div>
+              </div>
+           </section>
+
+           {/* Description */}
+           {careHome.description && (
+             <section>
+                <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">About Us</h3>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                   <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-wrap">{careHome.description}</p>
+                </div>
+             </section>
+           )}
+
+        </div>
+
+        {/* Footer Actions */}
+        <div className="p-6 border-t border-gray-100 bg-gray-50 flex justify-end">
+           <button 
+             onClick={onClose}
+             className="px-6 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium"
+           >
+              Close Profile
            </button>
         </div>
       </div>
@@ -266,6 +348,8 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
   onUpdateProfile
 }) => {
   const [activeTab, setActiveTab] = useState<'shifts' | 'profile' | 'history'>('shifts');
+  const [historyYear, setHistoryYear] = useState<string>('ALL');
+  const [historyMonth, setHistoryMonth] = useState<string>('ALL');
 
   // Filter shifts relevant to this worker
   const myShifts = shifts.filter(s => s.workerId === worker.id);
@@ -273,6 +357,16 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
   const upcomingShifts = myShifts.filter(s => s.status === ShiftStatus.BOOKED);
   const activeShifts = myShifts.filter(s => s.status === ShiftStatus.IN_PROGRESS);
   const completedShifts = myShifts.filter(s => [ShiftStatus.COMPLETED_PENDING_APPROVAL, ShiftStatus.CLOSED].includes(s.status));
+
+  // Compute available years from completed shifts
+  const availableYears = Array.from(new Set(completedShifts.map(s => s.date.split('-')[0]))).sort().reverse();
+
+  // Filter Logic for History
+  const filteredHistory = completedShifts.filter(s => {
+      if (historyYear !== 'ALL' && !s.date.startsWith(historyYear)) return false;
+      if (historyMonth !== 'ALL' && s.date.split('-')[1] !== historyMonth) return false;
+      return true;
+  });
 
   const ProfileEditor = () => {
     const [formData, setFormData] = useState({
@@ -570,16 +664,51 @@ export const WorkerDashboard: React.FC<WorkerDashboardProps> = ({
       )}
 
       {activeTab === 'history' && (
-        <div className="space-y-8">
-           {completedShifts.length > 0 ? (
-            <section>
-              <h2 className="text-lg font-semibold mb-3 text-gray-700 flex items-center"><Archive size={18} className="mr-2"/> Work History</h2>
-              {completedShifts.map(s => <ShiftCard key={s.id} shift={s} careHome={careHomes.find(ch => ch.id === s.careHomeId)} onUpdateShiftStatus={onUpdateShiftStatus} onRateShift={onRateShift} />)}
-            </section>
-          ) : (
-             <div className="text-center py-12 text-gray-400">
+        <div className="space-y-4">
+           {/* Date Filter Controls */}
+           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+             <div className="flex items-center gap-2 text-gray-600 font-medium">
+                <Archive size={18} />
+                <h3>Work History</h3>
+             </div>
+             
+             <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-lg border border-gray-200">
+                    <Filter size={14} className="text-gray-400 ml-2" />
+                    <select 
+                       className="bg-transparent text-sm font-medium text-gray-700 outline-none p-1"
+                       value={historyMonth}
+                       onChange={(e) => setHistoryMonth(e.target.value)}
+                    >
+                       <option value="ALL">All Months</option>
+                       {MONTHS.map(m => (
+                          <option key={m.value} value={m.value}>{m.label}</option>
+                       ))}
+                    </select>
+                    <div className="w-px h-4 bg-gray-300 mx-1"></div>
+                    <select 
+                       className="bg-transparent text-sm font-medium text-gray-700 outline-none p-1"
+                       value={historyYear}
+                       onChange={(e) => setHistoryYear(e.target.value)}
+                    >
+                       <option value="ALL">All Years</option>
+                       {availableYears.map(year => (
+                          <option key={year} value={year}>{year}</option>
+                       ))}
+                    </select>
+                </div>
+             </div>
+           </div>
+
+           {/* Filtered List */}
+           {filteredHistory.length > 0 ? (
+              <section className="space-y-4">
+                {filteredHistory.map(s => <ShiftCard key={s.id} shift={s} careHome={careHomes.find(ch => ch.id === s.careHomeId)} onUpdateShiftStatus={onUpdateShiftStatus} onRateShift={onRateShift} />)}
+              </section>
+           ) : (
+             <div className="text-center py-12 text-gray-400 bg-white rounded-xl border border-dashed border-gray-200">
               <Archive size={48} className="mx-auto mb-4 opacity-50" />
-              <p>No completed shifts found.</p>
+              <p>No completed shifts found for the selected period.</p>
             </div>
           )}
         </div>

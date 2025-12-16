@@ -6,6 +6,7 @@ import { WorkerRegistration } from './views/WorkerRegistration';
 import { SuperAdminDashboard } from './views/SuperAdminDashboard';
 import { UserRole, AppState, ShiftStatus, Shift, User, WorkerProfile } from './types';
 import { Users, Building2, UserPlus, ShieldCheck } from 'lucide-react';
+import { sendVerificationEmail, sendBookingNotifications } from './services/mockNotificationService';
 
 // --- MOCK DATA ---
 const MOCK_CARE_HOME: User = {
@@ -110,20 +111,50 @@ const INITIAL_SHIFTS: Shift[] = [
   }
 ];
 
+// Helper to load/save state
+const loadState = <T,>(key: string, fallback: T): T => {
+  try {
+    const saved = localStorage.getItem(key);
+    return saved ? JSON.parse(saved) : fallback;
+  } catch (e) {
+    console.error(`Error loading ${key}`, e);
+    return fallback;
+  }
+};
+
 // --- MAIN APP COMPONENT ---
 export default function App() {
   const [view, setView] = useState<'LANDING' | 'HOME_DASH' | 'WORKER_DASH' | 'REGISTER_HOME' | 'REGISTER_WORKER' | 'ADMIN_DASH'>('LANDING');
   
-  // App State
-  const [shifts, setShifts] = useState<Shift[]>(INITIAL_SHIFTS);
+  // App State with Persistence
+  const [shifts, setShifts] = useState<Shift[]>(() => loadState('shifts', INITIAL_SHIFTS));
   const [activeWorkerId, setActiveWorkerId] = useState<string>('w_1'); // Default to Sarah for demo
-  const [workers, setWorkers] = useState<WorkerProfile[]>(MOCK_WORKERS);
+  const [workers, setWorkers] = useState<WorkerProfile[]>(() => loadState('workers', MOCK_WORKERS));
   
   // Maintain a list of all care homes
-  const [careHomes, setCareHomes] = useState<User[]>([MOCK_CARE_HOME]);
+  const [careHomes, setCareHomes] = useState<User[]>(() => loadState('careHomes', [MOCK_CARE_HOME]));
   // The currently logged in care home (for the dashboard view)
-  const [currentCareHome, setCurrentCareHome] = useState<User>(MOCK_CARE_HOME);
+  const [currentCareHome, setCurrentCareHome] = useState<User>(() => loadState('currentCareHome', MOCK_CARE_HOME));
   
+  // Persistence Effects
+  useEffect(() => localStorage.setItem('shifts', JSON.stringify(shifts)), [shifts]);
+  useEffect(() => localStorage.setItem('workers', JSON.stringify(workers)), [workers]);
+  useEffect(() => localStorage.setItem('careHomes', JSON.stringify(careHomes)), [careHomes]);
+  useEffect(() => localStorage.setItem('currentCareHome', JSON.stringify(currentCareHome)), [currentCareHome]);
+
+  // HELPER: Check availability
+  const isWorkerAvailableOnDate = (workerId: string, date: string, excludeShiftId?: string): boolean => {
+    return !shifts.some(s => 
+      s.id !== excludeShiftId &&
+      s.workerId === workerId &&
+      s.date === date &&
+      (s.status === ShiftStatus.BOOKED || 
+       s.status === ShiftStatus.IN_PROGRESS || 
+       s.status === ShiftStatus.COMPLETED_PENDING_APPROVAL || 
+       s.status === ShiftStatus.CLOSED)
+    );
+  };
+
   // ACTIONS
   const createShift = (shiftData: Omit<Shift, 'id' | 'status' | 'careHomeId' | 'careHomeName'>) => {
     const newShift: Shift = {
@@ -136,17 +167,44 @@ export default function App() {
     setShifts(prev => [newShift, ...prev]);
   };
 
-  const bookWorker = (shiftId: string, workerId: string) => {
+  const bookWorker = async (shiftId: string, workerId: string) => {
+    const shift = shifts.find(s => s.id === shiftId);
+    if (!shift) return;
+
+    // Check availability
+    if (!isWorkerAvailableOnDate(workerId, shift.date)) {
+      alert("Action Failed: This worker already has a confirmed shift on this date.");
+      return;
+    }
+
     setShifts(prev => prev.map(s => 
       s.id === shiftId 
         ? { ...s, workerId, status: ShiftStatus.PENDING_ACCEPTANCE } 
         : s
     ));
-    // Simulate notification
-    alert(`Request sent to worker!`);
+
+    const worker = workers.find(w => w.id === workerId);
+
+    if (worker) {
+      await sendBookingNotifications(worker, shift);
+      alert(`Request sent to ${worker.name}!\n\n✓ Notification sent via Email\n✓ Notification sent via SMS`);
+    } else {
+      alert(`Request sent to worker!`);
+    }
   };
 
   const updateShiftStatus = (shiftId: string, status: ShiftStatus) => {
+    // If accepting a shift, ensure no double booking
+    if (status === ShiftStatus.BOOKED) {
+      const shift = shifts.find(s => s.id === shiftId);
+      if (shift && shift.workerId) {
+        if (!isWorkerAvailableOnDate(shift.workerId, shift.date, shiftId)) {
+          alert("You cannot accept this shift because you already have a confirmed booking on this date.");
+          return;
+        }
+      }
+    }
+
     setShifts(prev => prev.map(s => 
       s.id === shiftId ? { ...s, status } : s
     ));
@@ -219,11 +277,15 @@ export default function App() {
     setView('LANDING');
   };
 
-  const handleRegisterWorker = (newWorker: WorkerProfile) => {
+  const handleRegisterWorker = async (newWorker: WorkerProfile) => {
     // New workers are not approved by default
     const workerWithAuth = { ...newWorker, approved: false };
     setWorkers(prev => [...prev, workerWithAuth]);
-    alert("Registration successful! Your account is pending Super Admin approval.");
+    
+    // Send mock verification email
+    await sendVerificationEmail(newWorker.email || '', newWorker.name);
+
+    alert(`Registration successful! \n\nA verification email has been sent to ${newWorker.email}.\nPlease verify your account before logging in.`);
     setView('LANDING');
   };
 
@@ -366,6 +428,7 @@ export default function App() {
         <SuperAdminDashboard 
           careHomes={careHomes}
           workers={workers}
+          shifts={shifts}
           onApprove={handleAdminApprove}
           onReject={handleAdminReject}
           onLogout={() => setView('LANDING')}
